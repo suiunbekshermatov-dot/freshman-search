@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ky">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1-курс: Кабинет жана кураторду издөө</title>
+  <title>1 курс: Поиск кабинета и куратора</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,7 +11,6 @@
     :root {
       --primary: #2563eb;
       --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-      --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
       --bg-gradient: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #eef2ff 100%);
       --card-bg: #ffffff;
       --text-main: #0f172a;
@@ -265,7 +264,7 @@
   <div class="container">
     <div class="main-card">
       
-      <!-- ЛОГОТИП (эгер logo.png бар болсо автоматтык чыгат) -->
+      <!-- ЛОГОТИП (отображается автоматически, если в репозитории есть logo.png) -->
       <div class="logo-box" id="logoBox" style="display: none;">
         <img src="logo.png" alt="Logo" onerror="this.parentElement.style.display='none'" onload="this.parentElement.style.display='block'">
       </div>
@@ -273,10 +272,10 @@
       <div class="header-section">
         <div class="badge">
           <span class="badge-dot"></span>
-          1-КУРС • 2026–2027
+          1 КУРС • 2026–2027
         </div>
-        <h1>Кабинетиңизди жана кураторуңузду табыңыз</h1>
-        <p class="subtitle">Издөө үчүн Студенттик ID же Фамилияңызды жазыңыз</p>
+        <h1>Узнайте свой кабинет и куратора</h1>
+        <p class="subtitle">Введите ваш студенческий ID или Фамилию для поиска</p>
       </div>
 
       <div class="search-wrapper">
@@ -284,11 +283,11 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="searchInput" placeholder="Мисалы: 260202001 же Досаева" autofocus autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Например: 260202001 или Досаева" autofocus autocomplete="off">
       </div>
 
       <div id="results" class="results-wrapper">
-        <div class="empty-state">Жогорудагы сапка ID же фамилияңызды жазыңыз ☝️</div>
+        <div class="empty-state">Введите фамилию или ID в строку выше ☝️</div>
       </div>
 
     </div>
@@ -302,7 +301,7 @@
       .then(data => { students = data; })
       .catch(() => {
         document.getElementById('results').innerHTML = 
-          '<div class="empty-state" style="color: #ef4444;">Маалыматты жүктөөдө ката чыкты.</div>';
+          '<div class="empty-state" style="color: #ef4444;">Ошибка при загрузке данных.</div>';
       });
 
     const searchInput = document.getElementById('searchInput');
@@ -311,7 +310,7 @@
     searchInput.addEventListener('input', function() {
       const q = this.value.trim().toLowerCase();
       if (!q) {
-        resultsContainer.innerHTML = '<div class="empty-state">Жогорудагы сапка ID же фамилияңызды жазыңыз ☝️</div>';
+        resultsContainer.innerHTML = '<div class="empty-state">Введите фамилию или ID в строку выше ☝️</div>';
         return;
       }
 
@@ -321,7 +320,7 @@
       );
 
       if (matches.length === 0) {
-        resultsContainer.innerHTML = '<div class="empty-state" style="color: #ef4444; font-weight: 600;">Студент табылган жок. Текшерип кайра жазыңыз.</div>';
+        resultsContainer.innerHTML = '<div class="empty-state" style="color: #ef4444; font-weight: 600;">Студент не найден. Проверьте правильность написания.</div>';
         return;
       }
 
@@ -329,24 +328,24 @@
       resultsContainer.innerHTML = topMatches.map(s => `
         <div class="student-card">
           <div class="student-name">${s.fio}</div>
-          <div class="student-id">Студенттик ID: <strong>${s.id}</strong></div>
+          <div class="student-id">Студенческий ID: <strong>${s.id}</strong></div>
           <div class="info-panel">
             <div>
-              <span class="info-label">Тайпасы</span>
+              <span class="info-label">Группа</span>
               <span class="tag-badge">${s.group}</span>
             </div>
             <div>
-              <span class="info-label">Багыты</span>
+              <span class="info-label">Направление</span>
               <span class="tag-badge">${s.major}</span>
             </div>
             <div class="full-width">
-              <span class="info-label">Куратору</span>
+              <span class="info-label">Куратор</span>
               <div class="curator-name">${s.curator}</div>
             </div>
           </div>
           <div class="room-banner">
-            <div class="room-title">Чогулуш өтүүчү кабинет</div>
-            <div class="room-num">${s.room}-кабинет</div>
+            <div class="room-title">Кабинет собрания</div>
+            <div class="room-num">Кабинет № ${s.room}</div>
           </div>
         </div>
       `).join('');
