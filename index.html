@@ -4,150 +4,293 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>1-курс: Кабинет жана кураторду издөө</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #2563eb;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+      --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+      --bg-gradient: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #eef2ff 100%);
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #f1f5f9;
-      color: #0f172a;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      padding: 30px 16px;
+      justify-content: center;
+      padding: 32px 16px;
+      -webkit-font-smoothing: antialiased;
     }
-    .container { width: 100%; max-width: 520px; }
-    .card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 26px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
+
+    .container {
+      width: 100%;
+      max-width: 500px;
     }
+
+    .main-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 36px 28px;
+      box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      position: relative;
+    }
+
+    .logo-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-box img {
+      max-height: 60px;
+      max-width: 220px;
+      object-fit: contain;
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
     .badge {
-      display: inline-block;
-      background: #e0e7ff;
-      color: #3730a3;
-      padding: 4px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 6px 14px;
       border-radius: 9999px;
       font-size: 12px;
       font-weight: 700;
+      letter-spacing: 0.5px;
       margin-bottom: 12px;
-      text-transform: uppercase;
+      border: 1px solid #dbeafe;
     }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #2563eb;
+      border-radius: 50%;
+    }
+
     h1 {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
       color: #0f172a;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    p.sub {
+
+    p.subtitle {
       font-size: 14px;
-      color: #64748b;
-      margin-bottom: 22px;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
+
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #94a3b8;
+      stroke-width: 2.2;
+      pointer-events: none;
+    }
+
     input {
       width: 100%;
-      padding: 15px 18px;
+      padding: 16px 20px 16px 50px;
       font-size: 16px;
-      border: 2px solid #cbd5e1;
-      border-radius: 12px;
+      font-family: inherit;
+      color: #0f172a;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
       outline: none;
-      transition: all 0.2s ease;
-      background: #ffffff;
+      background: #f8fafc;
+      transition: all 0.25s ease;
     }
+
     input:focus {
       border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+      background: #ffffff;
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.12);
     }
-    .results {
-      margin-top: 18px;
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    .results-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
-    .student-item {
-      background: #f8fafc;
+
+    .student-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px;
       border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 18px;
-      text-align: left;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
+      animation: cardAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    @keyframes cardAppear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .student-name {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 19px;
+      font-weight: 800;
       color: #0f172a;
+      line-height: 1.3;
       margin-bottom: 4px;
     }
+
     .student-id {
       font-size: 13px;
+      font-weight: 600;
       color: #64748b;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
-    .details-grid {
-      background: #ffffff;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      margin-bottom: 12px;
+
+    .student-id strong {
+      color: #1e293b;
+      letter-spacing: 0.3px;
+    }
+
+    .info-panel {
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid #f1f5f9;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      font-size: 14px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
-    .detail-full { grid-column: span 2; }
-    .label {
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .info-label {
       font-size: 11px;
-      text-transform: uppercase;
       font-weight: 700;
-      color: #64748b;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 4px;
       display: block;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      background: #ffffff;
+      color: #1e293b;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid #e2e8f0;
+    }
+
+    .curator-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .room-banner {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 16px 14px;
+      text-align: center;
+      box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.35);
+    }
+
+    .room-banner .room-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.9;
       margin-bottom: 2px;
     }
-    .val {
-      font-size: 14px;
-      font-weight: 600;
-      color: #1e293b;
+
+    .room-banner .room-num {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
     }
-    .room-box {
-      background: #eff6ff;
-      border: 1.5px solid #bfdbfe;
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-    .room-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #1d4ed8;
-      text-transform: uppercase;
-    }
-    .room-val {
-      font-size: 22px;
-      font-weight: 800;
-      color: #1d4ed8;
-    }
+
     .empty-state {
       text-align: center;
-      padding: 22px 10px;
-      color: #64748b;
+      padding: 24px 12px;
       font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="card">
-      <div class="badge">1-курс • 2026–2027</div>
-      <h1>Кабинетиңизди жана кураторуңузду табыңыз</h1>
-      <p class="sub">Издөө үчүн Студенттик ID же Фамилияңызды жазыңыз</p>
+    <div class="main-card">
+      
+      <!-- ЛОГОТИП (эгер logo.png бар болсо автоматтык чыгат) -->
+      <div class="logo-box" id="logoBox" style="display: none;">
+        <img src="logo.png" alt="Logo" onerror="this.parentElement.style.display='none'" onload="this.parentElement.style.display='block'">
+      </div>
 
-      <input type="text" id="searchInput" placeholder="Мисалы: 260202001 же Досаева" autofocus autocomplete="off">
+      <div class="header-section">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          1-КУРС • 2026–2027
+        </div>
+        <h1>Кабинетиңизди жана кураторуңузду табыңыз</h1>
+        <p class="subtitle">Издөө үчүн Студенттик ID же Фамилияңызды жазыңыз</p>
+      </div>
 
-      <div id="results" class="results">
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Мисалы: 260202001 же Досаева" autofocus autocomplete="off">
+      </div>
+
+      <div id="results" class="results-wrapper">
         <div class="empty-state">Жогорудагы сапка ID же фамилияңызды жазыңыз ☝️</div>
       </div>
+
     </div>
   </div>
 
@@ -157,9 +300,9 @@
     fetch('students.json')
       .then(res => res.json())
       .then(data => { students = data; })
-      .catch(err => {
+      .catch(() => {
         document.getElementById('results').innerHTML = 
-          '<div class="empty-state" style="color:red;">Маалымат жүктөлбөй калды.</div>';
+          '<div class="empty-state" style="color: #ef4444;">Маалыматты жүктөөдө ката чыкты.</div>';
       });
 
     const searchInput = document.getElementById('searchInput');
@@ -178,23 +321,32 @@
       );
 
       if (matches.length === 0) {
-        resultsContainer.innerHTML = '<div class="empty-state" style="color:#dc2626;">Студент табылган жок. Текшерип кайра жазыңыз.</div>';
+        resultsContainer.innerHTML = '<div class="empty-state" style="color: #ef4444; font-weight: 600;">Студент табылган жок. Текшерип кайра жазыңыз.</div>';
         return;
       }
 
-      const topMatches = matches.slice(0, 10);
+      const topMatches = matches.slice(0, 8);
       resultsContainer.innerHTML = topMatches.map(s => `
-        <div class="student-item">
+        <div class="student-card">
           <div class="student-name">${s.fio}</div>
           <div class="student-id">Студенттик ID: <strong>${s.id}</strong></div>
-          <div class="details-grid">
-            <div><span class="label">Тайпасы</span><span class="val">${s.group}</span></div>
-            <div><span class="label">Багыты</span><span class="val">${s.major}</span></div>
-            <div class="detail-full"><span class="label">Куратору</span><span class="val">${s.curator}</span></div>
+          <div class="info-panel">
+            <div>
+              <span class="info-label">Тайпасы</span>
+              <span class="tag-badge">${s.group}</span>
+            </div>
+            <div>
+              <span class="info-label">Багыты</span>
+              <span class="tag-badge">${s.major}</span>
+            </div>
+            <div class="full-width">
+              <span class="info-label">Куратору</span>
+              <div class="curator-name">${s.curator}</div>
+            </div>
           </div>
-          <div class="room-box">
-            <div class="room-label">Чогулуш өтүүчү кабинет</div>
-            <div class="room-val">${s.room}-кабинет</div>
+          <div class="room-banner">
+            <div class="room-title">Чогулуш өтүүчү кабинет</div>
+            <div class="room-num">${s.room}-кабинет</div>
           </div>
         </div>
       `).join('');
