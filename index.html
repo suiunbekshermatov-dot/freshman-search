@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1-курс: Кабинет жана кураторду издөө</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 16px;
+    }
+    .container { width: 100%; max-width: 520px; }
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .badge {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    p.sub {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 22px;
+    }
+    input {
+      width: 100%;
+      padding: 15px 18px;
+      font-size: 16px;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s ease;
+      background: #ffffff;
+    }
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+    .results {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .student-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: left;
+    }
+    .student-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .student-id {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+    .details-grid {
+      background: #ffffff;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .detail-full { grid-column: span 2; }
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #64748b;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .val {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .room-box {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .room-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1d4ed8;
+      text-transform: uppercase;
+    }
+    .room-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1d4ed8;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 22px 10px;
+      color: #64748b;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <div class="badge">1-курс • 2026–2027</div>
+      <h1>Кабинетиңизди жана кураторуңузду табыңыз</h1>
+      <p class="sub">Издөө үчүн Студенттик ID же Фамилияңызды жазыңыз</p>
+
+      <input type="text" id="searchInput" placeholder="Мисалы: 260202001 же Досаева" autofocus autocomplete="off">
+
+      <div id="results" class="results">
+        <div class="empty-state">Жогорудагы сапка ID же фамилияңызды жазыңыз ☝️</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let students = [];
+
+    fetch('students.json')
+      .then(res => res.json())
+      .then(data => { students = data; })
+      .catch(err => {
+        document.getElementById('results').innerHTML = 
+          '<div class="empty-state" style="color:red;">Маалымат жүктөлбөй калды.</div>';
+      });
+
+    const searchInput = document.getElementById('searchInput');
+    const resultsContainer = document.getElementById('results');
+
+    searchInput.addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      if (!q) {
+        resultsContainer.innerHTML = '<div class="empty-state">Жогорудагы сапка ID же фамилияңызды жазыңыз ☝️</div>';
+        return;
+      }
+
+      const matches = students.filter(s => 
+        String(s.id).toLowerCase().includes(q) || 
+        s.fio.toLowerCase().includes(q)
+      );
+
+      if (matches.length === 0) {
+        resultsContainer.innerHTML = '<div class="empty-state" style="color:#dc2626;">Студент табылган жок. Текшерип кайра жазыңыз.</div>';
+        return;
+      }
+
+      const topMatches = matches.slice(0, 10);
+      resultsContainer.innerHTML = topMatches.map(s => `
+        <div class="student-item">
+          <div class="student-name">${s.fio}</div>
+          <div class="student-id">Студенттик ID: <strong>${s.id}</strong></div>
+          <div class="details-grid">
+            <div><span class="label">Тайпасы</span><span class="val">${s.group}</span></div>
+            <div><span class="label">Багыты</span><span class="val">${s.major}</span></div>
+            <div class="detail-full"><span class="label">Куратору</span><span class="val">${s.curator}</span></div>
+          </div>
+          <div class="room-box">
+            <div class="room-label">Чогулуш өтүүчү кабинет</div>
+            <div class="room-val">${s.room}-кабинет</div>
+          </div>
+        </div>
+      `).join('');
+    });
+  </script>
+</body>
+</html>
